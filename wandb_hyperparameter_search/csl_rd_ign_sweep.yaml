@@ -1,0 +1,15 @@
+method: bayes
+name: rd-ign-sweep
+project: CSL
+entity: position-encoding
+metric:
+  goal: maximize
+  name: best/val_accuracy
+parameters:
+  ign_encoder:
+    parameters:
+      num_hidden_layers:
+        min: 2
+        max: 4
+      hidden_dim:
+        values: [8, 16, 32]

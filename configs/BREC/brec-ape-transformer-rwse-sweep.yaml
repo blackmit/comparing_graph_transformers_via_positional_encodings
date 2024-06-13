@@ -1,0 +1,74 @@
+out_dir: results
+metric_best: accuracy
+wandb:
+  use: True
+  project: brec-sweep
+  entity: position-encoding
+  name: rwse
+  sweep:
+    enable: True 
+    id: 37ymks1c
+    count: 10
+dataset:
+  split_mode: none # This currently does nothing for BREC
+  format: Custom
+  name: BREC
+  task: graph # Does nothing
+  task_type: classification # Does nothing (I think)
+  transductive: False
+  node_encoder: True
+  node_encoder_name: LinearNode+RWSE
+  node_encoder_bn: False
+  edge_encoder: False
+  edge_encoder_name: LinearEdge
+  edge_encoder_bn: False
+train:
+  mode: BREC
+  batch_size: 16 # full batch
+  eval_period: 1
+  enable_ckpt: True  # Checkpointing can now be disabled to save I/O when e.g. just benchmarking.
+  ckpt_best: True  # WARNING: Checkpoint every epoch a better model is found may increase I/O significantly.
+#  ckpt_period: 100  # Follow set checkpointing schedule
+model:
+  type: RPETransformer
+  loss_fun: cross_entropy
+  edge_decoding: dot
+  graph_pooling: graph_token
+rpe_transformer:
+  num_layers: 8
+  num_heads: 4
+  num_kernels: 4
+  embed_dim: 32
+  dropout: 0.0
+  attention_dropout: 0.1
+  mlp_dropout: 0.1
+  input_dropout: 0.1
+  use_degree_embedding: False
+  use_add_bias: False
+  use_mult_bias: False
+posenc_RWSE:
+  enable: True
+  kernel:
+    times_func: range(1,21) 
+  model: Linear
+  dim_pe: 32
+gnn:
+  head: graphormer_graph
+  layers_pre_mp: 0
+  layers_post_mp: 3  # Not used when `gnn.head: san_graph`
+  dim_inner: 32  # `gt.dim_hidden` must match `gnn.dim_inner`
+  dim_out: 16
+  batchnorm: True
+  act: relu
+  dropout: 0.0
+  agg: mean
+  normalize_adj: False
+optim:
+  clip_grad_norm: True
+  clip_grad_norm_value: 5.0
+  optimizer: adamW
+  weight_decay: 0.01
+  base_lr: 0.001
+  max_epoch: 100
+  scheduler: polynomial_with_warmup
+  num_warmup_epochs: 5
