@@ -10,7 +10,7 @@ def set_cfg_gt(cfg):
     cfg.posenc_RPE.inf_distance = 512.0
     cfg.posenc_RPE.num_in_degrees = None
     cfg.posenc_RPE.num_out_degrees = None
-    # Types of pseudoinverse
+    # Types of RPE
     cfg.posenc_RPE.adjacency = False
     cfg.posenc_RPE.shortest_path_distance = False
     cfg.posenc_RPE.resistance_distance = False 
