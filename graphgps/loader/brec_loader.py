@@ -1,5 +1,3 @@
-from brec.dataset import BRECDataset
-
 def load_brec_dataset(
     format : str,
     name : str,
@@ -7,5 +5,6 @@ def load_brec_dataset(
 ):
     if format == "Custom":
         if name == "BREC":
+            from brec.dataset import BRECDataset
             return BRECDataset(root=dataset_dir)
                 
